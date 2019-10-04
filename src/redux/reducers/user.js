@@ -1,9 +1,9 @@
 import { 
-    ITEM_CREATED } from "../actions/user.js";
+    USER_CREATED } from "../actions/user.js";
 
-export const message = (state={}, action={}) => {
+export const signupSuccess = (state={}, action={}) => {
     switch (action.type){
-        case ITEM_CREATED:
+        case USER_CREATED:
             return action.message
         default: return state
     }
