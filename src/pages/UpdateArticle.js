@@ -1,31 +1,41 @@
-import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
-import { addArticle } from "../redux/actions/article"
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { deleteArticle } from '../redux/actions/article';
 
-const NewArticle = () => {
+const UpdateArticle = (article) => {
     const [data, setData ] = useState({
-            title:"",
-            body:"",
-            category:""
-        });
+        title: article.article.title,
+        body: article.article.body,
+        category: article.article.category
+    });
     const dispatchAction = useDispatch();
-    const submitArticle = (data) => dispatchAction(addArticle(data));
+    const submitArticle = (data) => dispatchAction(deleteArticle(data));
 
     const handleChange = e => {
     e.preventDefault();
     setData({ ...data, [e.target.name]: e.target.value }
     );
     };
-    
+
     const handleSubmit = (e) => {
-      e.preventDefault();
+    e.preventDefault();
         submitArticle(data)
         console.log(data);
         
-      }
-    return (
-      <div className="container-fluid bg-light py-3">
-      <form id="registration-form" onSubmit={handleSubmit} >
+    }
+   console.log(article)   
+  return (
+    
+    <div id="UpdateModal" className="modal fade">
+	<div className="modal-dialog modal-confirm update" role="document">
+		<div className="modal-content">
+			<div className="modal-header">			
+				<h4 class="modal-title">Update Article?</h4>	
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div className="modal-body">
+				
+            <form id="registration-form" className="md-form mb-5" onSubmit={handleSubmit} >
           <div className="controls">
               <div className="row">
                   <div className="col-sm-4">
@@ -76,18 +86,25 @@ const NewArticle = () => {
                       <div className="help-block with-errors"></div>
                   </div>
               </div>
-              <div className="col-md-12">
-                  <input type="submit" className="btn btn-success btn-send" value="Post Article"/>
-              </div>
+              
           </div>
-          <div className="row">
-              <div className="col-md-12">
-                  <p className="text-muted"><strong>*</strong> These fields are required.</p>
-              </div>
-          </div>
+          <div class="modal-footer">
+				<button type="submit" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                <button 
+                type="button" 
+                class="btn btn-success"
+                >Update Article</button>
+			</div>
       </form>
-  </div>
-    );
+
+			</div>
+			
+		</div>
+	</div>
+</div> 
+  )
 }
 
-export default NewArticle;
+export default UpdateArticle;
+
+

@@ -1,6 +1,6 @@
 import { 
     ARTICLES, 
-    ITEM_ADDED } from "../actions";
+    ITEM_ADDED, ARTICLE_DELETED } from "../actions/article";
 
 
 export const articles = (state=[], action={}) => {
@@ -13,6 +13,8 @@ export const articles = (state=[], action={}) => {
 export const message = (state={}, action={}) => {
     switch (action.type){
         case ITEM_ADDED:
+            return action.message
+        case ARTICLE_DELETED:
             return action.message
         default: return state
     }

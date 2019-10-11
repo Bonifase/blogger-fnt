@@ -1,61 +1,51 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { addComment } from "../redux/actions"
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { addComment } from "../redux/actions/article"
 
-class NewComment extends Component {
-    state = {
-            comment:""
+const NewComment = (props) => {
+    const [data, setData ] = useState({
+            comment:"",
+            err: {}
         
-    };
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        } 
+    });
+    const articleId = props.articleId
+    const dispatch = useDispatch();
+    const dispatchAddComment = (data, articleId) => dispatch(addComment(data, articleId))
     
-
-    handleChange = e => {
+    const handleChange = e => {
     e.preventDefault();
-    this.setState({
+    setData({
         comment: e.target.value
     });
     };
     
-    handleSubmit(e) {
+    const handleSubmit = (e) => {
       e.preventDefault();
-        this.props.addComment(this.state, this.props.articleId)
-        console.log(this.props.articleId);
+      dispatchAddComment(data,articleId)
+        console.log(this)
+        return <Redirect push to='/article-list' />;
         
       }
-    
-      render() {
         return (
             <>
-          <form className="clearfix" id="add-comment-form" onSubmit={this.handleSubmit}>
+          <form className="clearfix" id="add-comment-form" onSubmit={handleSubmit}>
                     <textarea 
                         className="form-control" 
-                        ref="text" col="2"
-                        value={this.state.comment}
-                        onChange={this.handleChange} 
+                        col="2"
+                        value={data.comment}
+                        onChange={handleChange} 
+                        required
                         placeholder="Your comment"
+                        
                     />
                     <br />
-                    <button className="btn btn-success pull-right">Send</button>
+                    <button className="comment-btn btn-info pull-right">
+                        Add Comment
+                    </button>
             </form>
           </>
         );
-    }
 }
-NewComment.propTypes = {
-    addComment: PropTypes.func.isRequired
-};
-function mapStateToProps(state) {
-  return {
-    message: state.message,
-  };
-}
-export default connect(
-  mapStateToProps, 
-  { addComment }
-)(NewComment);
+
+export default NewComment;
